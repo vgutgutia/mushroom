@@ -1,5 +1,5 @@
 # ===============================================
-# Clean → Encode → Classify (KNN) — Simplified
+# Vansh Gutgutia (P2) Adv. AI Course
 # ===============================================
 # Dataset: Kaggle "Mushroom Classification"
 # Expected file: ./mushrooms.csv
@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler, label_binarize
-from sklearn.impute import SimpleImputer  # used ONCE as an example
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.impute import SimpleImputer  # for imputing the code
+from sklearn.neighbors import KNeighborsClassifier # this is our model
 from sklearn.metrics import (
     accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay,
     roc_curve, auc
@@ -24,7 +24,7 @@ np.random.seed(RANDOM_STATE)
 # -----------------------------
 # 0) Load data
 # -----------------------------
-csv_path = "./mushroom.csv"   # TODO: place the file or change path
+csv_path = "./mushroom.csv"   # TODO: place the file or change path (done) 
 if not os.path.exists(csv_path):
     raise FileNotFoundError(f"Could not find {csv_path} — download from Kaggle and try again.")
 
@@ -153,8 +153,8 @@ else:
 # --------------------------------------------
 # 6) KNN + Grid Search
 # --------------------------------------------
-param_grid = {
-    "n_neighbors": [3, 5, 7, 9, 11, 15, 21],
+param_grid = { # HYPERPARAMETERS
+    "n_neighbors": [3, 5, 7, 9, 11, 15, 21], 
     "weights": ["uniform", "distance"],
     "p": [1, 2]  # 1=Manhattan, 2=Euclidean
 }
@@ -173,7 +173,7 @@ print("Best params:", grid.best_params_)
 y_pred = best_knn.predict(X_test_enc)
 
 test_acc = accuracy_score(y_test, y_pred)
-print("\nTest accuracy: {:.4f}".format(test_acc))
+print("\nTest accuracy: {:.4f}".format(test_acc)) # test accuracy is perfect because the dataset is pretty simple
 print("\nClassification report:\n", classification_report(y_test, y_pred))
 
 cm = confusion_matrix(y_test, y_pred, labels=np.unique(y))
@@ -182,7 +182,8 @@ plt.figure()
 disp.plot(values_format="d")
 plt.title("Confusion Matrix (Test)")
 plt.tight_layout()
-plt.show()
+plt.show() # shows predicted vs real values. All our values are in pred true&real true + pred false&real false
+# because our model is very accurate.
 
 # --------------------------------------------
 # 8) Validation curve (CV accuracy vs k)
@@ -239,6 +240,8 @@ if hasattr(best_knn, "predict_proba"):
         plt.legend(loc="lower right")
         plt.tight_layout()
         plt.show()
+        
+    # ROC is basically 100% because this dataset is very straightforward and easy for the model
 
 # --------------------------------------------
 # 10) Print summary of features
